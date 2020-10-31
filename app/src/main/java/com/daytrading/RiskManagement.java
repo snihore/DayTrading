@@ -128,11 +128,27 @@ public class RiskManagement {
 
     }
 
+    public double totalLoss(){
+
+        double loss = lossPerStock();
+
+        return round(loss*expectedQuantity(), 2);
+
+    }
+
     public double totalProfit02(long quantity){
 
         double profit = profitPerStock();
 
         return round(profit*quantity, 2);
+
+    }
+
+    public double totalLoss02(long quantity){
+
+        double loss = lossPerStock();
+
+        return round(loss*quantity, 2);
 
     }
 
@@ -144,12 +160,28 @@ public class RiskManagement {
 
     }
 
+    public double totalLoss03(long capital){
+
+        double loss = lossPerStock();
+
+        return round(loss*expectedQuantity03(capital), 2);
+
+    }
+
     public double totalProfitPercentage(){
 
         double profit = totalProfit();
 
         return round((profit/expectedCapitalWithMargin())*100, 2);
     }
+
+    public double totalLossPercentage(){
+
+        double loss = totalLoss();
+
+        return round((loss/expectedCapitalWithMargin())*100, 2);
+    }
+
     public double totalProfitPercentage02(long quantity){
 
         double profit = totalProfit02(quantity);
@@ -157,11 +189,25 @@ public class RiskManagement {
         return round((profit/expectedCapitalWithMargin02(quantity))*100, 2);
     }
 
+    public double totalLossPercentage02(long quantity){
+
+        double loss = totalLoss02(quantity);
+
+        return round((loss/expectedCapitalWithMargin02(quantity))*100, 2);
+    }
+
     public double totalProfitPercentage03(long capital){
 
         double profit = totalProfit03(capital);
 
         return round((profit/capital)*100, 2);
+    }
+
+    public double totalLossPercentage03(long capital){
+
+        double loss = totalLoss03(capital);
+
+        return round((loss/capital)*100, 2);
     }
 
     public String toString(){
@@ -173,7 +219,8 @@ public class RiskManagement {
                 "Capital Required will be Rs. "+expectedCapital()+"\n\n" +
                 "But you need to pay (15% Margin) will be Rs. "+expectedCapitalWithMargin()+"\n\n"+
                 "Also Quantity will be "+expectedQuantity()+"\n\n" +
-                "Total Profit suppose to Rs. "+totalProfit()+" ("+totalProfitPercentage()+"%)\n\n";
+                "Total Profit suppose to Rs. "+totalProfit()+" ("+totalProfitPercentage()+"%)\n\n"+
+                "Total Loss suppose to Rs. "+totalLoss()+" ("+totalLossPercentage()+"%)\n\n";
 
         return str;
     }
@@ -186,7 +233,8 @@ public class RiskManagement {
                 "Capital Required will be Rs. "+expectedCapital02(quantity)+"\n\n" +
                 "But you need to pay (15% Margin) will be Rs. "+expectedCapitalWithMargin02(quantity)+"\n\n"+
                 "Also Quantity will be "+quantity+"\n\n" +
-                "Total Profit suppose to Rs. "+totalProfit02(quantity)+" ("+totalProfitPercentage02(quantity)+"%)\n\n";
+                "Total Profit suppose to Rs. "+totalProfit02(quantity)+" ("+totalProfitPercentage02(quantity)+"%)\n\n"+
+                "Total Loss suppose to Rs. "+totalLoss02(quantity)+" ("+totalLossPercentage02(quantity)+"%)\n\n";
 
         return str;
     }
@@ -199,7 +247,8 @@ public class RiskManagement {
                 "Capital Required will be Rs. "+expectedCapital03(capital)+"\n\n" +
                 "But you need to pay (15% Margin) will be Rs. "+capital+"\n\n"+
                 "Also Quantity will be "+expectedQuantity03(capital)+"\n\n" +
-                "Total Profit suppose to Rs. "+totalProfit03(capital)+" ("+totalProfitPercentage03(capital)+"%)\n\n";
+                "Total Profit suppose to Rs. "+totalProfit03(capital)+" ("+totalProfitPercentage03(capital)+"%)\n\n"+
+                "Total Loss suppose to Rs. "+totalLoss03(capital)+" ("+totalLossPercentage03(capital)+"%)\n\n";
 
         return str;
     }
