@@ -21,14 +21,17 @@ import org.w3c.dom.Text;
 
 public class BottomSheetDialog extends BottomSheetDialogFragment {
 
+    private MainActivity mainActivity;
+
     private EditText entry;
     private EditText exitOrSL;
     private String label;
 
-    public BottomSheetDialog(EditText entry, EditText exitOrSL, String label) {
+    public BottomSheetDialog(MainActivity mainActivity, EditText entry, EditText exitOrSL, String label) {
         this.entry = entry;
         this.exitOrSL = exitOrSL;
         this.label = label;
+        this.mainActivity = mainActivity;
     }
 
     @Override
@@ -46,6 +49,11 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         final TextView exitOrStopLoss = (TextView) v.findViewById(R.id.exit_price_bs);
         final TextView buyTag = (TextView)v.findViewById(R.id.buy_tag_btn_bs);
         final TextView sellTag = (TextView)v.findViewById(R.id.sell_tag_btn_bs);
+        final TextView quantityTextView = (TextView)v.findViewById(R.id.quantity_bs);
+
+        if(label.equals("Stop Loss")){
+            quantityTextView.setVisibility(View.VISIBLE);
+        }
 
         final String[] tradeType = {""};
         final double[] res = {0.0};
@@ -102,7 +110,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    double value = ((double) progress / 10.0);
+                    double value = ((double) progress / 100.0);
 //                    Log.d("TAG", "onProgressChanged: "+value);
 
                     percentageEditText.setText(String.valueOf(value));
@@ -110,30 +118,42 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
                     if(entry != null && !entry.getText().toString().trim().matches("") &&
                         !percentageEditText.getText().toString().trim().matches("")){
 
-                        PercentageCalc calc = new PercentageCalc(
-                                Double.parseDouble(entry.getText().toString().trim()),
-                                Double.parseDouble(percentageEditText.getText().toString().trim()),
-                                tradeType[0]);
+                        try{
 
-                        changePoint.setText(String.valueOf(calc.getPointChange()));
+                            PercentageCalc calc = new PercentageCalc(
+                                    Double.parseDouble(entry.getText().toString().trim()),
+                                    Double.parseDouble(percentageEditText.getText().toString().trim()),
+                                    tradeType[0]);
 
-                        if(label != null && label.equals("Exit Price")){
+                            changePoint.setText(String.valueOf(calc.getPointChange()));
 
-                            exitOrStopLoss.setText(
-                                    label+"\nRs. "+calc.getExit()
-                            );
+                            if(label != null && label.equals("Exit Price")){
 
-                            res[0] = calc.getExit();
+                                exitOrStopLoss.setText(
+                                        label+"\nRs. "+calc.getExit()
+                                );
+
+                                res[0] = calc.getExit();
 
 
-                        }else if(label != null && label.equals("Stop Loss")){
 
-                            exitOrStopLoss.setText(
-                                    label+"\nRs. "+calc.getStopLoss()
-                            );
+                            }else if(label != null && label.equals("Stop Loss")){
 
-                            res[0] = calc.getStopLoss();
+                                exitOrStopLoss.setText(
+                                        label+"\nRs. "+calc.getStopLoss()
+                                );
+
+                                res[0] = calc.getStopLoss();
+
+                                if(calc.getStopLoss() != 0.0 && calc.getStopLoss() != Double.valueOf(entry.getText().toString().trim())){
+                                    quantityTextView.setText(String.valueOf(getQuantity(calc.getStopLoss())));
+                                }
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
+
                     }
 
                 }
@@ -156,30 +176,42 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
                     if(entry != null && !entry.getText().toString().trim().matches("") &&
                             !s.toString().matches("")){
 
-                        PercentageCalc calc = new PercentageCalc(
-                                Double.parseDouble(entry.getText().toString().trim()),
-                                Double.parseDouble(s.toString()),
-                                tradeType[0]);
+                        try{
 
-                        changePoint.setText(String.valueOf(calc.getPointChange()));
+                            PercentageCalc calc = new PercentageCalc(
+                                    Double.parseDouble(entry.getText().toString().trim()),
+                                    Double.parseDouble(s.toString()),
+                                    tradeType[0]);
 
-                        if(label != null && label.equals("Exit Price")){
+                            changePoint.setText(String.valueOf(calc.getPointChange()));
 
-                            exitOrStopLoss.setText(
-                                    label+"\nRs. "+calc.getExit()
-                            );
+                            if(label != null && label.equals("Exit Price")){
 
-                            res[0] = calc.getExit();
+                                exitOrStopLoss.setText(
+                                        label+"\nRs. "+calc.getExit()
+                                );
+
+                                res[0] = calc.getExit();
 
 
-                        }else if(label != null && label.equals("Stop Loss")){
 
-                            exitOrStopLoss.setText(
-                                    label+"\nRs. "+calc.getStopLoss()
-                            );
+                            }else if(label != null && label.equals("Stop Loss")){
 
-                            res[0] = calc.getStopLoss();
+                                exitOrStopLoss.setText(
+                                        label+"\nRs. "+calc.getStopLoss()
+                                );
+
+                                res[0] = calc.getStopLoss();
+
+                                if(calc.getStopLoss() != 0.0 && calc.getStopLoss() != Double.valueOf(entry.getText().toString().trim())){
+                                    quantityTextView.setText(String.valueOf(getQuantity(calc.getStopLoss())));
+                                }
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
+
                     }
 
                 }
@@ -203,5 +235,30 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         }
 
         return v;
+    }
+
+    private long getQuantity(double stoploss) {
+
+        if(mainActivity.getInvestment() == 0){
+            return 0;
+        }
+
+        if(mainActivity.getRptPercentage() == 0.0){
+            return 0;
+        }
+
+        if(entry == null || entry.getText().toString().trim().matches("")){
+            return 0;
+        }
+
+        RiskManagement riskManagement = new RiskManagement(
+                mainActivity.getInvestment(),
+                mainActivity.getRptPercentage(),
+                Double.valueOf(entry.getText().toString().trim()),
+                0.0,
+                stoploss
+        );
+
+        return riskManagement.expectedQuantity();
     }
 }

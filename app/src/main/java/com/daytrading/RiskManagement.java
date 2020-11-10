@@ -21,6 +21,8 @@ public class RiskManagement {
         this.stopLoss = stopLoss;
     }
 
+
+
     public long rpt(){
 
         return (long) Math.ceil((investment*rptPercentage)/100);

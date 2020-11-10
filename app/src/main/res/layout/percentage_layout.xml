@@ -71,7 +71,7 @@
             android:layout_weight="1"
             android:fontFamily="monospace"
             android:gravity="center"
-            android:text="0"
+            android:text="0.0"
             android:textColor="@android:color/darker_gray"
             android:textSize="18sp" />
 
@@ -87,7 +87,7 @@
             android:layout_weight="1"
             android:fontFamily="monospace"
             android:gravity="center"
-            android:text="10"
+            android:text="1.0"
             android:textColor="@android:color/darker_gray"
             android:textSize="18sp" />
 
@@ -155,6 +155,23 @@
         android:fontFamily="monospace"
         app:layout_constraintStart_toEndOf="@+id/buy_tag_btn_bs"
         app:layout_constraintTop_toBottomOf="@+id/entry_price_bs" />
+
+    <TextView
+        android:id="@+id/quantity_bs"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/red_circle"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/entry_price_bs"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

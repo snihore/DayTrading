@@ -24,6 +24,34 @@ public class MainActivity extends AppCompatActivity {
 
     private RiskManagement riskManagement;
 
+    public long getInvestment(){
+        if(investmentET != null && !investmentET.getText().toString().trim().matches("")){
+            try{
+
+                return Long.valueOf(investmentET.getText().toString().trim());
+
+            }catch (Exception e){
+                e.printStackTrace();
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    public double getRptPercentage(){
+        if(rptPercentageET != null && !rptPercentageET.getText().toString().trim().matches("")){
+            try{
+
+                return Double.valueOf(rptPercentageET.getText().toString().trim());
+
+            }catch (Exception e){
+                e.printStackTrace();
+                return 0.0;
+            }
+        }
+        return 0.0;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +107,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(entryPriceET != null && !entryPriceET.getText().toString().trim().matches("")){
-                    BottomSheetDialog bottomSheet = new BottomSheetDialog(entryPriceET, stopLossET, "Stop Loss");
+                if(!entryPriceET.getText().toString().trim().matches("") &&
+                        !investmentET.getText().toString().trim().matches("") &&
+                        !rptPercentageET.getText().toString().trim().matches("")){
+                    BottomSheetDialog bottomSheet = new BottomSheetDialog(MainActivity.this, entryPriceET, stopLossET, "Stop Loss");
                     bottomSheet.show(getSupportFragmentManager(),
                             "PercentageBottomSheet");
                 }
@@ -93,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(entryPriceET != null && !entryPriceET.getText().toString().trim().matches("")){
-                    BottomSheetDialog bottomSheet = new BottomSheetDialog(entryPriceET, exitPrice, "Exit Price");
+                    BottomSheetDialog bottomSheet = new BottomSheetDialog(MainActivity.this, entryPriceET, exitPrice, "Exit Price");
                     bottomSheet.show(getSupportFragmentManager(),
                             "PercentageBottomSheet");
                 }
