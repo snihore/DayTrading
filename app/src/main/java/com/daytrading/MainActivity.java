@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText investmentET, rptPercentageET, entryPriceET, exitPrice, stopLossET;
     private TextView output, changeBtn;
     private Button getBtn;
+    private ImageView exitPercntageBtn, stopLossPercentageBtn;
 
     private RiskManagement riskManagement;
 
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         output = (TextView)findViewById(R.id.output);
         getBtn = (Button)findViewById(R.id.get_btn);
         changeBtn = (TextView)findViewById(R.id.change_btn);
+        exitPercntageBtn = (ImageView)findViewById(R.id.exit_percentage_btn);
+        stopLossPercentageBtn = (ImageView)findViewById(R.id.stop_loss_percentage_btn);
 
         changeBtn.setVisibility(View.INVISIBLE);
 
@@ -68,6 +72,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openDialog();
+            }
+        });
+
+        stopLossPercentageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(entryPriceET != null && !entryPriceET.getText().toString().trim().matches("")){
+                    BottomSheetDialog bottomSheet = new BottomSheetDialog(entryPriceET, stopLossET, "Stop Loss");
+                    bottomSheet.show(getSupportFragmentManager(),
+                            "PercentageBottomSheet");
+                }
+
+
+            }
+        });
+        exitPercntageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(entryPriceET != null && !entryPriceET.getText().toString().trim().matches("")){
+                    BottomSheetDialog bottomSheet = new BottomSheetDialog(entryPriceET, exitPrice, "Exit Price");
+                    bottomSheet.show(getSupportFragmentManager(),
+                            "PercentageBottomSheet");
+                }
+
+
             }
         });
 

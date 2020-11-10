@@ -75,28 +75,56 @@
                     android:inputType="numberDecimal"
                     android:hint="Entry Price (Rs.)"/>
             </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp">
-                <EditText
-                    android:id="@+id/exit_price_et"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:hint="Exit Price (Rs.)"/>
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true">
+                    <EditText
+                        android:id="@+id/exit_price_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:hint="Exit Price (Rs.)"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:id="@+id/exit_percentage_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_add_circle_24"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"/>
+            </RelativeLayout>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp">
-                <EditText
-                    android:id="@+id/stop_loss_et"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/stop_loss_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:hint="Stop Loss (Rs.)"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:id="@+id/stop_loss_percentage_btn"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:hint="Stop Loss (Rs.)"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:src="@drawable/ic_baseline_add_circle_24"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"/>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
