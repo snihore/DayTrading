@@ -28,6 +28,14 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="20dp"/>
+
+        <ImageView
+            android:id="@+id/take_screenshot"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:src="@drawable/ic_baseline_camera_enhance_24"
+            android:layout_alignParentRight="true"
+            android:padding="12dp"/>
     </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
