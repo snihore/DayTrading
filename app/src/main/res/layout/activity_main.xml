@@ -36,6 +36,15 @@
             android:src="@drawable/ic_baseline_camera_enhance_24"
             android:layout_alignParentRight="true"
             android:padding="12dp"/>
+
+        <ImageView
+            android:id="@+id/stock_journal"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:src="@drawable/ic_baseline_list_alt_24"
+            android:layout_alignParentRight="true"
+            android:padding="12dp"
+            android:layout_marginRight="?attr/actionBarSize"/>
     </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
@@ -70,7 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
-                    android:hint="Rate Per Trade (%)"/>
+                    android:hint="Risk Per Trade (%)"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -174,6 +183,23 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="16sp"
                 android:fontFamily="monospace"/>
+
+            <TextView
+                android:id="@+id/save_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="save"
+                android:textSize="18sp"
+                android:textColor="@android:color/holo_orange_dark"
+                android:fontFamily="monospace"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/orage_border"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginTop="20dp"
+                android:visibility="invisible"/>
 
         </LinearLayout>
 

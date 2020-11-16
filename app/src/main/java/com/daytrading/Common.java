@@ -18,5 +18,14 @@ public class Common {
         return dir.getPath()+File.separator;
     }
 
+    public static String excelFileLoc(Context context){
+
+        File dir = new File(String.valueOf(android.os.Environment.getExternalStorageDirectory())+"/DayTrading/");
+
+        if(!dir.exists())
+            dir.mkdir();
+        return dir.getPath()+File.separator;
+    }
+
 
 }
