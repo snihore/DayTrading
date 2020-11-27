@@ -10,16 +10,18 @@ public class ExcelRowData {
     private String PndL;
     private String PndLPer;
     private String PndLType;
+    private String date;
 
-    public ExcelRowData(String stock, String type, String entry, String exit, String qty, String pndL, String pndLPer, String pndLType) {
+    public ExcelRowData(String stock, String type, String entry, String exit, String qty, String pndL, String pndLPer, String pndLType, String date) {
         this.stock = stock;
         this.type = type;
         this.entry = entry;
         this.exit = exit;
         this.qty = qty;
-        PndL = pndL;
-        PndLPer = pndLPer;
-        PndLType = pndLType;
+        this.PndL = pndL;
+        this.PndLPer = pndLPer;
+        this.PndLType = pndLType;
+        this.date = date;
     }
 
     public String getStock() {
@@ -84,5 +86,13 @@ public class ExcelRowData {
 
     public void setPndLType(String pndLType) {
         PndLType = pndLType;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

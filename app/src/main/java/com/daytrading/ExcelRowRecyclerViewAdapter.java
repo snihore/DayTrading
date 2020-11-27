@@ -1,24 +1,30 @@
 package com.daytrading;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExcelRowRecyclerViewAdapter extends RecyclerView.Adapter<ExcelRowRecyclerViewAdapter.ExcelRowViewHolder> {
 
     private Context context;
     private List<ExcelRowData> list;
+    private ExcelRowClickListener excelRowClickListener;
 
-    public ExcelRowRecyclerViewAdapter(Context context, List<ExcelRowData> list) {
+    public ExcelRowRecyclerViewAdapter(Context context, List<ExcelRowData> list, ExcelRowClickListener excelRowClickListener) {
         this.context = context;
         this.list = list;
+        this.excelRowClickListener = excelRowClickListener;
     }
 
     @NonNull
@@ -26,7 +32,7 @@ public class ExcelRowRecyclerViewAdapter extends RecyclerView.Adapter<ExcelRowRe
     public ExcelRowViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(context).inflate(R.layout.excel_row_layout, parent, false);
-        return new ExcelRowViewHolder(view);
+        return new ExcelRowViewHolder(view, excelRowClickListener);
     }
 
     @Override
@@ -41,6 +47,7 @@ public class ExcelRowRecyclerViewAdapter extends RecyclerView.Adapter<ExcelRowRe
         holder.qtyTV.setText(data.getQty());
         holder.PndLTV.setText(data.getPndL());
         holder.PndLPerTV.setText("("+data.getPndLPer()+"%)");
+        holder.date.setText(" "+data.getDate()+" ");
 
         if(data.getType().toLowerCase().equals("short")){
             holder.typeTV.setBackground(context.getResources().getDrawable(R.drawable.red_solid));
@@ -68,11 +75,13 @@ public class ExcelRowRecyclerViewAdapter extends RecyclerView.Adapter<ExcelRowRe
         return list.size();
     }
 
-    public class ExcelRowViewHolder extends RecyclerView.ViewHolder{
+    public class ExcelRowViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView typeTV, stockTV, entryTV, exitTV, qtyTV, PndLTV, PndLPerTV;
+        TextView typeTV, stockTV, entryTV, exitTV, qtyTV, PndLTV, PndLPerTV, date;
+        ImageView deleteBtn, editBtn;
+        ExcelRowClickListener excelRowClickListener;
 
-        public ExcelRowViewHolder(@NonNull View itemView) {
+        public ExcelRowViewHolder(@NonNull View itemView, ExcelRowClickListener excelRowClickListener) {
             super(itemView);
 
             typeTV = (TextView)itemView.findViewById(R.id.excel_type);
@@ -82,6 +91,31 @@ public class ExcelRowRecyclerViewAdapter extends RecyclerView.Adapter<ExcelRowRe
             qtyTV = (TextView)itemView.findViewById(R.id.excel_qty);
             PndLTV = (TextView)itemView.findViewById(R.id.excel_PndL);
             PndLPerTV = (TextView)itemView.findViewById(R.id.excel_PndLPer);
+            date = (TextView)itemView.findViewById(R.id.excel_date);
+            deleteBtn = (ImageView)itemView.findViewById(R.id.excel_delete_btn);
+            editBtn = (ImageView)itemView.findViewById(R.id.excel_edit_btn);
+
+            this.excelRowClickListener = excelRowClickListener;
+
+            //Click Events
+            deleteBtn.setOnClickListener(this);
+            editBtn.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            switch (v.getId()){
+
+                case R.id.excel_delete_btn:
+                    excelRowClickListener.onClick(deleteBtn, getAdapterPosition(), "DELETE");
+                    break;
+
+                case R.id.excel_edit_btn:
+                    excelRowClickListener.onClick(editBtn, getAdapterPosition(), "EDIT");
+                    break;
+            }
+
         }
     }
 }
