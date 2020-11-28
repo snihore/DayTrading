@@ -51,12 +51,53 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         final TextView sellTag = (TextView)v.findViewById(R.id.sell_tag_btn_bs);
         final TextView quantityTextView = (TextView)v.findViewById(R.id.quantity_bs);
 
-        if(label.equals("Stop Loss")){
-            quantityTextView.setVisibility(View.VISIBLE);
-        }
-
         final String[] tradeType = {""};
         final double[] res = {0.0};
+
+        if(label.equals("Stop Loss")){
+            quantityTextView.setVisibility(View.VISIBLE);
+
+            if(!mainActivity.tadeType.equals("NO_TRADE")){
+                if(mainActivity.tadeType.equals("BUY")){
+
+                    buyTag.setBackground(getResources().getDrawable(R.drawable.green_solid));
+                    buyTag.setTextColor(Color.parseColor("#ffffff"));
+                    sellTag.setBackground(getResources().getDrawable(R.drawable.red_border));
+                    sellTag.setTextColor(Color.RED);
+                    tradeType[0] = "BUY";
+
+                }else if(mainActivity.tadeType.equals("SELL")){
+
+                    buyTag.setBackground(getResources().getDrawable(R.drawable.green_border));
+                    buyTag.setTextColor(getResources().getColor(R.color.colorAccent));
+                    sellTag.setBackground(getResources().getDrawable(R.drawable.red_solid));
+                    sellTag.setTextColor(Color.parseColor("#ffffff"));
+                    tradeType[0] = "SELL";
+
+                }
+            }
+        }else if(label.equals("Exit Price")){
+            if(!mainActivity.tadeType.equals("NO_TRADE")){
+                if(mainActivity.tadeType.equals("BUY")){
+
+                    buyTag.setBackground(getResources().getDrawable(R.drawable.green_solid));
+                    buyTag.setTextColor(Color.parseColor("#ffffff"));
+                    sellTag.setBackground(getResources().getDrawable(R.drawable.red_border));
+                    sellTag.setTextColor(Color.RED);
+                    tradeType[0] = "BUY";
+
+                }else if(mainActivity.tadeType.equals("SELL")){
+
+                    buyTag.setBackground(getResources().getDrawable(R.drawable.green_border));
+                    buyTag.setTextColor(getResources().getColor(R.color.colorAccent));
+                    sellTag.setBackground(getResources().getDrawable(R.drawable.red_solid));
+                    sellTag.setTextColor(Color.parseColor("#ffffff"));
+                    tradeType[0] = "SELL";
+
+                }
+            }
+        }
+
 
         try{
 
@@ -92,6 +133,9 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
                     sellTag.setBackground(getResources().getDrawable(R.drawable.red_border));
                     sellTag.setTextColor(Color.RED);
                     tradeType[0] = "BUY";
+                    if(label.equals("Exit Price")){
+                        mainActivity.tadeType = tradeType[0];
+                    }
                 }
             });
 
@@ -103,6 +147,9 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
                     sellTag.setBackground(getResources().getDrawable(R.drawable.red_solid));
                     sellTag.setTextColor(Color.parseColor("#ffffff"));
                     tradeType[0] = "SELL";
+                    if(label.equals("Exit Price")){
+                        mainActivity.tadeType = tradeType[0];
+                    }
                 }
             });
 

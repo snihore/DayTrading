@@ -11,8 +11,9 @@ public class ExcelRowData {
     private String PndLPer;
     private String PndLType;
     private String date;
+    private String PndLwithoutBr;
 
-    public ExcelRowData(String stock, String type, String entry, String exit, String qty, String pndL, String pndLPer, String pndLType, String date) {
+    public ExcelRowData(String stock, String type, String entry, String exit, String qty, String pndL, String pndLPer, String pndLType, String date, String PndLwithoutBr) {
         this.stock = stock;
         this.type = type;
         this.entry = entry;
@@ -22,6 +23,7 @@ public class ExcelRowData {
         this.PndLPer = pndLPer;
         this.PndLType = pndLType;
         this.date = date;
+        this.PndLwithoutBr = PndLwithoutBr;
     }
 
     public String getStock() {
@@ -94,5 +96,13 @@ public class ExcelRowData {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getPndLwithoutBr() {
+        return PndLwithoutBr;
+    }
+
+    public void setPndLwithoutBr(String pndLwithoutBr) {
+        PndLwithoutBr = pndLwithoutBr;
     }
 }

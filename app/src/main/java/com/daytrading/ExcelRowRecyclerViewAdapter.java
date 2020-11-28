@@ -45,9 +45,21 @@ public class ExcelRowRecyclerViewAdapter extends RecyclerView.Adapter<ExcelRowRe
         holder.entryTV.setText(data.getEntry());
         holder.exitTV.setText(data.getExit());
         holder.qtyTV.setText(data.getQty());
-        holder.PndLTV.setText(data.getPndL());
         holder.PndLPerTV.setText("("+data.getPndLPer()+"%)");
         holder.date.setText(" "+data.getDate()+" ");
+
+        Log.i("P&L without BR", data.getPndLwithoutBr());
+        String PndLFinal = "";
+        try{
+            //Parse only, if Number is available
+            Double.parseDouble(data.getPndLwithoutBr());
+            //Than, set PndL without Br
+            PndLFinal = data.getPndLwithoutBr();
+        }catch (Exception e){
+            //Otherwise, set PndL
+            PndLFinal = data.getPndL();
+        }
+
 
         if(data.getType().toLowerCase().equals("short")){
             holder.typeTV.setBackground(context.getResources().getDrawable(R.drawable.red_solid));
@@ -57,13 +69,13 @@ public class ExcelRowRecyclerViewAdapter extends RecyclerView.Adapter<ExcelRowRe
 
         if(data.getPndLType().toLowerCase().equals("profit")){
             String s = "+";
-            holder.PndLTV.setText(s+data.getPndL());
+            holder.PndLTV.setText(s+PndLFinal);
             holder.PndLTV.setTextColor(context.getResources().getColor(R.color.colorAccent));
             holder.PndLPerTV.setTextColor(context.getResources().getColor(R.color.colorAccent));
 
         }else if(data.getPndLType().toLowerCase().equals("loss")){
             String s = "-";
-            holder.PndLTV.setText(s+data.getPndL());
+            holder.PndLTV.setText(s+PndLFinal);
             holder.PndLTV.setTextColor(context.getResources().getColor(R.color.red));
             holder.PndLPerTV.setTextColor(context.getResources().getColor(R.color.red));
         }

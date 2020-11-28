@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -138,7 +139,8 @@ public class ExcelDataActivity extends AppCompatActivity {
                         PndL1,
                         PndLPer,
                         PndLType,
-                        date
+                        date,
+                        PndLB
                 ));
 
 
@@ -159,7 +161,8 @@ public class ExcelDataActivity extends AppCompatActivity {
                         break;
 
                     case "EDIT":
-                        Toast.makeText(ExcelDataActivity.this, "Edit "+list.get(position).getStock(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ExcelDataActivity.this, "Edit "+list.get(position).getStock(), Toast.LENGTH_SHORT).show();
+                        openEditDialog(position);
                         break;
                 }
             }
@@ -181,6 +184,88 @@ public class ExcelDataActivity extends AppCompatActivity {
         e.printStackTrace();
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
+    }
+
+    private void openEditDialog(int position) {
+
+        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(ExcelDataActivity.this).inflate(R.layout.excel_row_edit_dialog, viewGroup, false);
+
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        //finally creating the alert dialog and displaying it
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        //Handle Views
+        final EditText editText = (EditText)dialogView.findViewById(R.id.excel_row_edit_et);
+        TextView title = (TextView)dialogView.findViewById(R.id.excel_row_edit_title);
+        TextView cancelBtn = (TextView)dialogView.findViewById(R.id.excel_row_edit_cancel_btn);
+        TextView saveBtn = (TextView)dialogView.findViewById(R.id.excel_row_edit_save_btn);
+
+        try{
+
+            if(copyList == null){
+                alertDialog.dismiss();
+                Toast.makeText(this, "Excel Data Not Found !!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            title.setText(list.get(position).getStock());
+
+            int editIndex = -1;
+            editIndex = copyList.indexOf(list.get(position));
+
+            //Click events
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                }
+            });
+
+            final int finalEditIndex = editIndex;
+            saveBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(finalEditIndex < 0 || finalEditIndex>=copyList.size()){
+                        alertDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Not Updated", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    String PndLwithoutBr = editText.getText().toString().trim();
+
+                    if(PndLwithoutBr == null || PndLwithoutBr.matches("")){
+                        alertDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Not Updated", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    ExcelHandle excelHandle = new ExcelHandle(getApplicationContext());
+                    excelHandle.update(finalEditIndex+1, PndLwithoutBr);
+
+                    alertDialog.dismiss();
+                    list.clear();
+                    copyList.clear();
+                    read();
+
+                }
+            });
+
+        }catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void openDeleteDialog(int position) {

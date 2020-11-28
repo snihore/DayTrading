@@ -8,13 +8,16 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,9 +32,11 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private static final String TAG = "MainActivity";
+
+    public String tadeType = "NO_TRADE";
 
     private EditText investmentET, rptPercentageET, entryPriceET, exitPrice, stopLossET;
     private TextView output, changeBtn, saveBtn;
@@ -73,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //INIT VIEWS
         investmentET = (EditText)findViewById(R.id.investment_et);
@@ -171,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(entryPriceET != null && !entryPriceET.getText().toString().trim().matches("")){
+
                     BottomSheetDialog bottomSheet = new BottomSheetDialog(MainActivity.this, entryPriceET, exitPrice, "Exit Price");
                     bottomSheet.show(getSupportFragmentManager(),
                             "PercentageBottomSheet");
@@ -601,4 +608,5 @@ public class MainActivity extends AppCompatActivity {
         intent.setDataAndType(uri, "image/*");
         startActivity(intent);
     }
+
 }

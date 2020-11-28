@@ -18,6 +18,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -217,6 +219,105 @@ public class ExcelHandle {
         }
     }
 
+    public void update(int rowIndex, String PndLwithoutBr){
+
+        if(PndLwithoutBr == null || PndLwithoutBr.matches("") || PndLwithoutBr.matches("--")){
+            return;
+        }
+
+
+        try{
+
+            InputStream myInput = new FileInputStream(new File(Common.excelFileLoc(context)+FILE_NAME));
+
+            // Create a POI File System object
+            POIFSFileSystem myFileSystem = new POIFSFileSystem(myInput);
+            // Create a workbook using the File System
+            HSSFWorkbook myWorkBook = new HSSFWorkbook(myFileSystem);
+
+            // Get the first sheet from workbook
+            HSSFSheet hssfSheet = myWorkBook.getSheetAt(0);
+
+            Row row = hssfSheet.getRow(rowIndex);
+
+            if(row != null){
+
+                //Profit and Loss Without Brokerage
+                Cell cell8 = row.getCell(8);
+                cell8.setCellValue(PndLwithoutBr);
+
+                //Profit and Loss Percentage
+                Cell cell7 = row.getCell(7);
+                cell7.setCellValue(calcPercentage(row));
+
+                OutputStream outputStream = new FileOutputStream(new File(Common.excelFileLoc(context)+FILE_NAME));
+                myWorkBook.write(outputStream);
+
+                outputStream.close();
+
+            }else {
+                Toast.makeText(context, "Row Not Found !!", Toast.LENGTH_SHORT).show();
+            }
+
+
+            myWorkBook.close();
+            myFileSystem.close();
+            myInput.close();
+
+            Toast.makeText(context, "Updated", Toast.LENGTH_SHORT).show();
+
+
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+
+            Toast.makeText(context, "Excel File Not Found !!!", Toast.LENGTH_SHORT).show();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private String calcPercentage(Row row) {
+
+        //Profit and Loss Percentage
+        Cell cell7 = null;
+
+        try{
+
+            cell7 = row.getCell(7);
+
+            //Entry Price
+            Cell cell2 = row.getCell(2);
+            double entryPrice = Double.parseDouble(cell2.getStringCellValue());
+
+            //Quantity
+            Cell cell4 = row.getCell(4);
+            long qyantity = Long.parseLong(cell4.getStringCellValue());
+
+            //Profit and Loss Without Brokerage
+            Cell cell8 = row.getCell(8);
+            double br = Double.parseDouble(cell8.getStringCellValue());
+
+            //Calculate
+            double total = entryPrice*qyantity;
+            double totalMargin = (total*15)/100;
+
+            double res = round((br/totalMargin)*100, 2);
+
+            return String.valueOf(res);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            if(cell7 != null) return cell7.getStringCellValue();
+        }
+
+        return "";
+    }
+
+
     public void delete(int rowIndex){
 
         try {
@@ -286,6 +387,14 @@ public class ExcelHandle {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
 
