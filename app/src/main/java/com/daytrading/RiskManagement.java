@@ -3,6 +3,8 @@ package com.daytrading;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import static com.daytrading.Conf.MARGIN;
+
 public class RiskManagement {
 
     private long investment;
@@ -87,7 +89,7 @@ public class RiskManagement {
 
     public long expectedQuantity03(long capital){
 
-        double capitalFull = (capital*100)/15; // 15% MARGIN
+        double capitalFull = (capital*100)/ MARGIN; // 15% MARGIN, Now 25%
 
         double res = capitalFull/entryPrice;
 
@@ -104,7 +106,7 @@ public class RiskManagement {
     }
 
     public long expectedCapital03(long capital){
-        double capitalFull = (capital*100)/15; // 15% MARGIN
+        double capitalFull = (capital*100)/ MARGIN; // 15% MARGIN, Now 25%
         return (long) Math.ceil(capitalFull);
     }
 
@@ -112,13 +114,13 @@ public class RiskManagement {
 
         double res = expectedQuantity()*entryPrice;
 
-        return (long) Math.ceil((res*15)/100); // 15% MARGIN ONLY PAY
+        return (long) Math.ceil((res*MARGIN)/100); // 15% MARGIN ONLY PAY, Now 25%
     }
     public long expectedCapitalWithMargin02(long quantity){
 
         double res = quantity*entryPrice;
 
-        return (long) Math.ceil((res*15)/100); // 15% MARGIN ONLY PAY
+        return (long) Math.ceil((res*MARGIN)/100); // 15% MARGIN ONLY PAY, Now 25%
     }
 
 
@@ -219,7 +221,7 @@ public class RiskManagement {
                 "Loss Per Stock = Rs. "+lossPerStock()+" ("+lossPerStockPercentage()+"%)\n\n" +
                 "RR Ratio = "+riskToRewardRatio()+"\n\n" +
                 "Capital Required will be Rs. "+expectedCapital()+"\n\n" +
-                "But you need to pay (15% Margin) will be Rs. "+expectedCapitalWithMargin()+"\n\n"+
+                "But you need to pay ("+MARGIN+"% Margin) will be Rs. "+expectedCapitalWithMargin()+"\n\n"+
                 "Also Quantity will be "+expectedQuantity()+"\n\n" +
                 "Total Profit suppose to Rs. "+totalProfit()+" ("+totalProfitPercentage()+"%)\n\n"+
                 "Total Loss suppose to Rs. "+totalLoss()+" ("+totalLossPercentage()+"%)\n\n";
@@ -233,7 +235,7 @@ public class RiskManagement {
                 "Loss Per Stock = Rs. "+lossPerStock()+" ("+lossPerStockPercentage()+"%)\n\n" +
                 "RR Ratio = "+riskToRewardRatio()+"\n\n" +
                 "Capital Required will be Rs. "+expectedCapital02(quantity)+"\n\n" +
-                "But you need to pay (15% Margin) will be Rs. "+expectedCapitalWithMargin02(quantity)+"\n\n"+
+                "But you need to pay ("+MARGIN+"% Margin) will be Rs. "+expectedCapitalWithMargin02(quantity)+"\n\n"+
                 "Also Quantity will be "+quantity+"\n\n" +
                 "Total Profit suppose to Rs. "+totalProfit02(quantity)+" ("+totalProfitPercentage02(quantity)+"%)\n\n"+
                 "Total Loss suppose to Rs. "+totalLoss02(quantity)+" ("+totalLossPercentage02(quantity)+"%)\n\n";
@@ -247,7 +249,7 @@ public class RiskManagement {
                 "Loss Per Stock = Rs. "+lossPerStock()+" ("+lossPerStockPercentage()+"%)\n\n" +
                 "RR Ratio = "+riskToRewardRatio()+"\n\n" +
                 "Capital Required will be Rs. "+expectedCapital03(capital)+"\n\n" +
-                "But you need to pay (15% Margin) will be Rs. "+capital+"\n\n"+
+                "But you need to pay ("+MARGIN+"% Margin) will be Rs. "+capital+"\n\n"+
                 "Also Quantity will be "+expectedQuantity03(capital)+"\n\n" +
                 "Total Profit suppose to Rs. "+totalProfit03(capital)+" ("+totalProfitPercentage03(capital)+"%)\n\n"+
                 "Total Loss suppose to Rs. "+totalLoss03(capital)+" ("+totalLossPercentage03(capital)+"%)\n\n";

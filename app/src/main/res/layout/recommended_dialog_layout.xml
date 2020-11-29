@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:gravity="center"
-        android:text="Capital Required (15% Margin)"
+        android:text="Capital Required (Only Margin)"
         android:textColor="@android:color/darker_gray"
         android:textSize="15sp"
         android:fontFamily="monospace"
