@@ -304,7 +304,7 @@ public class ExcelHandle {
 
             //Calculate
             double total = entryPrice*qyantity;
-            double totalMargin = (total*Conf.MARGIN)/100;
+            double totalMargin = (total*Conf.getMargin(context))/100;
 
             double res = round((br/totalMargin)*100, 2);
 

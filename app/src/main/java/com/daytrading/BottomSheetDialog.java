@@ -299,6 +299,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         }
 
         RiskManagement riskManagement = new RiskManagement(
+                mainActivity.getApplicationContext(),
                 mainActivity.getInvestment(),
                 mainActivity.getRptPercentage(),
                 Double.valueOf(entry.getText().toString().trim()),

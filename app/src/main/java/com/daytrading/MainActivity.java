@@ -26,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.w3c.dom.Text;
 
 import java.io.File;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity{
     private TextView output, changeBtn, saveBtn;
     private Button getBtn;
     private ImageView exitPercntageBtn, stopLossPercentageBtn, takeScreenshot, stockJournal;
+    private FloatingActionButton setMarginBtn;
 
     private RiskManagement riskManagement;
     private Map<String, String> excelEntryMap = new HashMap<>();
@@ -94,6 +97,7 @@ public class MainActivity extends AppCompatActivity{
         takeScreenshot = (ImageView)findViewById(R.id.take_screenshot);
         stockJournal = (ImageView)findViewById(R.id.stock_journal);
         saveBtn = (TextView)findViewById(R.id.save_btn);
+        setMarginBtn = (FloatingActionButton) findViewById(R.id.margin_set_btn);
 
         changeBtn.setVisibility(View.INVISIBLE);
 
@@ -117,6 +121,7 @@ public class MainActivity extends AppCompatActivity{
 
                 try{
                     riskManagement = new RiskManagement(
+                            getApplicationContext(),
                             Long.valueOf(investmentET.getText().toString().trim()),
                             Double.valueOf(rptPercentageET.getText().toString().trim()),
                             Double.valueOf(entryPriceET.getText().toString().trim()),
@@ -203,6 +208,63 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        setMarginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSetMarginDialog();
+            }
+        });
+
+    }
+
+    private void openSetMarginDialog() {
+
+        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.set_margin_dialog, viewGroup, false);
+
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        //finally creating the alert dialog and displaying it
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        //Handle Views
+        TextView cancelBtn = (TextView)dialogView.findViewById(R.id.set_margin_dialog_cancel_btn);
+        TextView setBtn = (TextView)dialogView.findViewById(R.id.set_margin_dialog_set_btn);
+        final EditText editText = (EditText)dialogView.findViewById(R.id.set_margin_et);
+
+        //Click Events
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        setBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try{
+
+                    int margin = Integer.parseInt(editText.getText().toString().trim());
+
+                    Conf.setMargin(getApplicationContext(), margin);
+
+                    alertDialog.dismiss();
+
+                }catch (Exception e){
+                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void openRecommendedDialog(final RiskManagement riskManagement, long investment) {

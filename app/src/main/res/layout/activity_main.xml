@@ -201,9 +201,22 @@
                 android:layout_marginTop="20dp"
                 android:visibility="invisible"/>
 
+
         </LinearLayout>
 
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/margin_set_btn"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:clickable="true"
+        android:src="@drawable/margin_icon"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="70dp"
+        android:padding="5dp"/>
 
     <Button
         android:id="@+id/get_btn"
