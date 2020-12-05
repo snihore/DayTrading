@@ -13,6 +13,11 @@ import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GetQuantityDialog extends DialogFragment {
 
@@ -21,6 +26,7 @@ public class GetQuantityDialog extends DialogFragment {
     private  String entryPrice;
     private String investment;
     private String rptPercentage;
+    private RecyclerView recyclerView;
 
     public GetQuantityDialog(String investment, String rptPercentage, String entryPrice) {
         this.entryPrice = entryPrice;
@@ -52,29 +58,16 @@ public class GetQuantityDialog extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final ImageView closeBtn = view.findViewById(R.id.get_quantity_close_btn);
-        final EditText entryPriceET = view.findViewById(R.id.get_quantity_set_entry_price);
-        final TextView getQuantityShow = view.findViewById(R.id.get_quantity_show);
+        final ImageView closeBtn = (ImageView) view.findViewById(R.id.get_quantity_close_btn);
+        final EditText entryPriceET = (EditText) view.findViewById(R.id.get_quantity_set_entry_price);
+        recyclerView = (RecyclerView) view.findViewById(R.id.get_quantity_rv);
 
         if(entryPrice != null && !entryPrice.matches("")){
             entryPriceET.setText(entryPrice);
         }
 
         //Init
-        try{
-            GetQuantityCalc getQuantityCalc = new GetQuantityCalc(
-                    getContext(),
-                    Long.parseLong(investment),
-                    Double.parseDouble(rptPercentage),
-                    Double.parseDouble(entryPrice),
-                    2,
-                    "BUY"
-            );
-
-            getQuantityShow.setText(getQuantityCalc.toString());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        getQuantity(entryPrice);
 
         entryPriceET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -86,21 +79,8 @@ public class GetQuantityDialog extends DialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String entry = s.toString();
 
-                try{
-                    GetQuantityCalc getQuantityCalc = new GetQuantityCalc(
-                            getContext(),
-                            Long.parseLong(investment),
-                            Double.parseDouble(rptPercentage),
-                            Double.parseDouble(entry),
-                            2,
-                            "BUY"
-                    );
+                getQuantity(entry);
 
-                    getQuantityShow.setText(getQuantityCalc.toString());
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
             }
 
             @Override
@@ -129,4 +109,38 @@ public class GetQuantityDialog extends DialogFragment {
             dialog.getWindow().setLayout(width, height);
         }
     }
+
+    private void getQuantity(String entry){
+
+        try{
+            GetQuantityCalc getQuantityCalc = new GetQuantityCalc(
+                    getContext(),
+                    Long.parseLong(investment),
+                    Double.parseDouble(rptPercentage),
+                    Double.parseDouble(entry),
+                    2,
+                    "BUY"
+            );
+
+            List<Long> quantites = getQuantityCalc.getQuantites();
+            List<Double> stopLossPercentages = getQuantityCalc.getStopLossPercentages();
+
+            List<GetQuantityData> list = new ArrayList<>();
+
+            for(int i=0; i<quantites.size(); i++){
+                list.add(new GetQuantityData(
+                        String.valueOf(stopLossPercentages.get(i)),
+                        String.valueOf(quantites.get(i))
+                ));
+            }
+
+            GetQuantityShowItemAdapter adapter = new GetQuantityShowItemAdapter(getContext(), list);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }
