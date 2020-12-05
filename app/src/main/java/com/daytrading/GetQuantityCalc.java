@@ -70,6 +70,13 @@ public class GetQuantityCalc {
 
             long quantity = riskManagement.expectedQuantity();
 
+            long expectedCapital = riskManagement.expectedCapitalWithMargin();
+
+            if(expectedCapital > investment){
+
+                quantity = riskManagement.expectedQuantity03(investment);
+            }
+
             list.add(quantity);
 
         }

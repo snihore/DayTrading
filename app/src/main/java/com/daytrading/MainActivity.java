@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity{
     public String tadeType = "NO_TRADE";
 
     private EditText investmentET, rptPercentageET, entryPriceET, exitPrice, stopLossET;
-    private TextView output, changeBtn, saveBtn;
+    private TextView output, changeBtn, saveBtn, showMargin;
     private Button getBtn;
     private ImageView exitPercntageBtn, stopLossPercentageBtn, takeScreenshot, stockJournal, getQuantityBtn;
     private FloatingActionButton setMarginBtn;
@@ -101,10 +101,13 @@ public class MainActivity extends AppCompatActivity{
         saveBtn = (TextView)findViewById(R.id.save_btn);
         setMarginBtn = (FloatingActionButton) findViewById(R.id.margin_set_btn);
         getQuantityBtn = (ImageView)findViewById(R.id.get_quantity_btn);
+        showMargin = (TextView)findViewById(R.id.show_margin);
 
         changeBtn.setVisibility(View.INVISIBLE);
 
         try{
+
+            showMarginMethod();
 
             long capitalGET = Conf.getCapital(getApplicationContext());
             float rptGET = Conf.getRPT(getApplicationContext());
@@ -303,6 +306,13 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
+    private void showMarginMethod() {
+
+        int margin = Conf.getMargin(getApplicationContext());
+
+        showMargin.setText("Mr. "+String.valueOf(margin)+"%");
+    }
+
     private void openGetQuantityDialog(String investment, String rptPercentage, String entryPrice) {
 
         try{
@@ -356,6 +366,8 @@ public class MainActivity extends AppCompatActivity{
                     Conf.setMargin(getApplicationContext(), margin);
 
                     alertDialog.dismiss();
+
+                    showMarginMethod();
 
                 }catch (Exception e){
                     Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
