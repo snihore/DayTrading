@@ -14,6 +14,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity{
     private EditText investmentET, rptPercentageET, entryPriceET, exitPrice, stopLossET;
     private TextView output, changeBtn, saveBtn;
     private Button getBtn;
-    private ImageView exitPercntageBtn, stopLossPercentageBtn, takeScreenshot, stockJournal;
+    private ImageView exitPercntageBtn, stopLossPercentageBtn, takeScreenshot, stockJournal, getQuantityBtn;
     private FloatingActionButton setMarginBtn;
 
     private RiskManagement riskManagement;
@@ -98,8 +100,76 @@ public class MainActivity extends AppCompatActivity{
         stockJournal = (ImageView)findViewById(R.id.stock_journal);
         saveBtn = (TextView)findViewById(R.id.save_btn);
         setMarginBtn = (FloatingActionButton) findViewById(R.id.margin_set_btn);
+        getQuantityBtn = (ImageView)findViewById(R.id.get_quantity_btn);
 
         changeBtn.setVisibility(View.INVISIBLE);
+
+        try{
+
+            long capitalGET = Conf.getCapital(getApplicationContext());
+            float rptGET = Conf.getRPT(getApplicationContext());
+
+            if(capitalGET > 0){
+                investmentET.setText(String.valueOf(capitalGET));
+            }
+
+            if(rptGET > 0.0f){
+                rptPercentageET.setText(String.valueOf(rptGET));
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        investmentET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try{
+
+                    long capital = Long.parseLong(investmentET.getText().toString().trim());
+
+                    Conf.setCapital(getApplicationContext(), capital);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        rptPercentageET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try{
+
+                    float rpt = Float.parseFloat(rptPercentageET.getText().toString().trim());
+
+                    Conf.setRPT(getApplicationContext(),rpt);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         //CLICK EVENTS
         takeScreenshot.setOnClickListener(new View.OnClickListener() {
@@ -214,7 +284,34 @@ public class MainActivity extends AppCompatActivity{
                 openSetMarginDialog();
             }
         });
+        
+        getQuantityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+                String entryPrice = entryPriceET.getText().toString().trim();
+                String investment = investmentET.getText().toString().trim();
+                String rptPercentage = rptPercentageET.getText().toString().trim();
+                
+                if(investment != null && !investment.matches("") &&
+                        rptPercentage != null && !rptPercentage.matches("") &&
+                        entryPrice != null && !entryPrice.matches("")){
+                    openGetQuantityDialog(investment, rptPercentage, entryPrice);
+                }
+            }
+        });
 
+    }
+
+    private void openGetQuantityDialog(String investment, String rptPercentage, String entryPrice) {
+
+        try{
+
+            final GetQuantityDialog dialog = GetQuantityDialog.display(getSupportFragmentManager(), investment, rptPercentage, entryPrice);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void openSetMarginDialog() {

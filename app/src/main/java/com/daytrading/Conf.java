@@ -6,6 +6,16 @@ import android.widget.Toast;
 
 public class Conf {
 
+    private static SharedPreferences getRPTSharedPreference(Context context){
+
+        final String NAME = "RPTSharedPreferences";
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+
+        return sharedPreferences;
+    }
+
+
     private static SharedPreferences getSharedPreference(Context context){
         final String NAME = "SetMarginSharedPreferences";
 
@@ -56,4 +66,81 @@ public class Conf {
 
         return margin;
     }
+
+    public static void setRPT(Context context, float rpt){
+
+        if(context == null || rpt <= 0.0f){
+            return;
+        }
+
+        SharedPreferences sharedPreferences =  getRPTSharedPreference(context);
+
+        if(sharedPreferences == null){
+            return;
+        }
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if(editor == null){
+            return;
+        }
+
+        editor.putFloat("RPT", rpt);
+
+        editor.commit();
+
+    }
+
+    public static void setCapital(Context context, long capital){
+
+        if(context == null || capital <= 0){
+            return;
+        }
+
+        SharedPreferences sharedPreferences =  getRPTSharedPreference(context);
+
+        if(sharedPreferences == null){
+            return;
+        }
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if(editor == null){
+            return;
+        }
+
+        editor.putLong("CAPITAL", capital);
+
+        editor.commit();
+
+    }
+
+    public static long getCapital(Context context){
+        if(context == null){
+            return 0;
+        }
+
+        SharedPreferences sharedPreferences = getRPTSharedPreference(context);
+
+        if(sharedPreferences == null){
+            return 0;
+        }
+
+        return sharedPreferences.getLong("CAPITAL", 0);
+    }
+
+    public static float getRPT(Context context){
+        if(context == null){
+            return 0.0f;
+        }
+
+        SharedPreferences sharedPreferences = getRPTSharedPreference(context);
+
+        if(sharedPreferences == null){
+            return 0.0f;
+        }
+
+        return sharedPreferences.getFloat("RPT", 0.0f);
+    }
+
 }
