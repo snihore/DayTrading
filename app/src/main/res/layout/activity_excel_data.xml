@@ -25,6 +25,19 @@
             android:textColor="#ffffff"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/p_nd_l_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:text="P\u0026L"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView

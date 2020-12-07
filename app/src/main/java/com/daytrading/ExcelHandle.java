@@ -2,7 +2,10 @@ package com.daytrading;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -21,12 +24,16 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.List;
 
 public class ExcelHandle {
 
     private static String FILE_NAME = "day_trading_excel_file_v2.xls";
+
+    private static final String TAG = "ExcelHandle";
 
 
     public static void checkExcelFile(Context context){
@@ -399,4 +406,82 @@ public class ExcelHandle {
     }
 
 
+    public List<PndLData> getPndLDataFromExcel(String filter){
+
+        List<PndLData> list = new ArrayList<>();
+
+        try{
+
+            InputStream myInput = new FileInputStream(new File(Common.excelFileLoc(context)+FILE_NAME));
+
+            // Create a POI File System object
+            POIFSFileSystem myFileSystem = new POIFSFileSystem(myInput);
+
+            // Create a workbook using the File System
+            HSSFWorkbook myWorkBook = new HSSFWorkbook(myFileSystem);
+
+            // Get the first sheet from workbook
+            HSSFSheet mySheet = myWorkBook.getSheet("DayTradingJournal");
+
+            // We now need something to iterate through the cells.
+            Iterator<Row> rowIter = mySheet.rowIterator();
+            int rowno =0;
+
+            while (rowIter.hasNext()) {
+                Log.d(TAG, " row no "+ rowno);
+                HSSFRow myRow = (HSSFRow) rowIter.next();
+                String PndL="", PndLType="", date = "";
+                if(rowno != 0 ) {
+                    Iterator<Cell> cellIter = myRow.cellIterator();
+                    int colno =0;
+                    while (cellIter.hasNext()) {
+                        HSSFCell myCell = (HSSFCell) cellIter.next();
+                        if(colno==6){
+                            PndLType = myCell.toString();
+                        }else if(colno==8){
+                            PndL = myCell.toString();
+                        }else if(colno==9){
+                            date = myCell.toString();
+                        }
+                        colno++;
+                        Log.d(TAG, " Index :" + myCell.getColumnIndex() + " -- " + myCell.toString());
+
+                    }
+
+                }
+                //Add
+                try{
+                    if(PndL != "" && PndLType != "" && date != ""){
+                        //check month
+                        String dateMonth = date.split("-")[1];
+
+                        if(dateMonth.equals(filter)){
+                            list.add(new PndLData(
+                                    PndL,
+                                    PndLType,
+                                    date
+                            ));
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                rowno++;
+            }
+
+            
+            
+
+            myWorkBook.close();
+            myFileSystem.close();
+            myInput.close();
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+
+        return list;
+    }
 }

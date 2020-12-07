@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,7 +44,7 @@ public class ExcelDataActivity extends AppCompatActivity {
     private static String FILE_NAME = "day_trading_excel_file_v2.xls";
 
     private static final String TAG = "ExcelDataActivity";
-    private TextView status;
+    private TextView status, PndLBtn;
     private RecyclerView recyclerView;
     private List<ExcelRowData> list, copyList;
     private ExcelRowRecyclerViewAdapter adapter;
@@ -55,6 +56,7 @@ public class ExcelDataActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView)findViewById(R.id.excel_data_rv);
         status = (TextView)findViewById(R.id.status);
+        PndLBtn = (TextView)findViewById(R.id.p_nd_l_btn);
         list = new ArrayList<>();
 
         try{
@@ -63,6 +65,15 @@ public class ExcelDataActivity extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
+        //Click Events
+        PndLBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ProfitAndLossActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

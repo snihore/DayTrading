@@ -13,7 +13,8 @@
         android:roundIcon="@drawable/day_trading_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ExcelDataActivity"></activity>
+        <activity android:name=".ProfitAndLossActivity"></activity>
+        <activity android:name=".ExcelDataActivity" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
