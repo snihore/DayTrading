@@ -24,6 +24,15 @@ public class Conf {
         return sharedPreferences;
     }
 
+    private static SharedPreferences getLotSizeSharedPreference(Context context){
+
+        final String NAME = "LotSizeSharedPreferences";
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+
+        return sharedPreferences;
+    }
+
     public static void setMargin(Context context, int margin){
 
         if(context == null || margin <= 0){
@@ -91,6 +100,30 @@ public class Conf {
 
     }
 
+    public static void setLotSize(Context context, int lotSize){
+
+        if(context == null || lotSize <= 0){
+            return;
+        }
+
+        SharedPreferences sharedPreferences =  getLotSizeSharedPreference(context);
+
+        if(sharedPreferences == null){
+            return;
+        }
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if(editor == null){
+            return;
+        }
+
+        editor.putInt("LOTSIZE", lotSize);
+
+        editor.commit();
+
+    }
+
     public static void setCapital(Context context, long capital){
 
         if(context == null || capital <= 0){
@@ -141,6 +174,20 @@ public class Conf {
         }
 
         return sharedPreferences.getFloat("RPT", 0.0f);
+    }
+
+    public static int getLotSize(Context context){
+        if(context == null){
+            return 0;
+        }
+
+        SharedPreferences sharedPreferences = getLotSizeSharedPreference(context);
+
+        if(sharedPreferences == null){
+            return 0;
+        }
+
+        return sharedPreferences.getInt("LOTSIZE", 0);
     }
 
 }

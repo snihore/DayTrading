@@ -106,6 +106,15 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="5dp"/>
+                <ImageView
+                    android:id="@+id/fno_btn"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/fno_icon"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginTop="5dp"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"

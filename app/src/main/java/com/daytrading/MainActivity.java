@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity{
     private EditText investmentET, rptPercentageET, entryPriceET, exitPrice, stopLossET;
     private TextView output, changeBtn, saveBtn, showMargin;
     private Button getBtn;
-    private ImageView exitPercntageBtn, stopLossPercentageBtn, takeScreenshot, stockJournal, getQuantityBtn;
+    private ImageView exitPercntageBtn, stopLossPercentageBtn, takeScreenshot, stockJournal, getQuantityBtn, FnOBtn;
     private FloatingActionButton setMarginBtn;
 
     private RiskManagement riskManagement;
@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity{
         setMarginBtn = (FloatingActionButton) findViewById(R.id.margin_set_btn);
         getQuantityBtn = (ImageView)findViewById(R.id.get_quantity_btn);
         showMargin = (TextView)findViewById(R.id.show_margin);
+        FnOBtn = (ImageView)findViewById(R.id.fno_btn);
 
         changeBtn.setVisibility(View.INVISIBLE);
 
@@ -300,6 +301,31 @@ public class MainActivity extends AppCompatActivity{
                         rptPercentage != null && !rptPercentage.matches("") &&
                         entryPrice != null && !entryPrice.matches("")){
                     openGetQuantityDialog(investment, rptPercentage, entryPrice);
+                }
+            }
+        });
+
+        FnOBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getApplicationContext(), FuturesAndOptionsActivity.class);
+
+                if(!investmentET.getText().toString().trim().matches("") &&
+                        !rptPercentageET.getText().toString().trim().matches("") &&
+                        !entryPriceET.getText().toString().trim().matches("")){
+
+                    try{
+                        intent.putExtra("investment", Long.parseLong(investmentET.getText().toString().trim()));
+
+                        intent.putExtra("rptPercentage", Double.parseDouble(rptPercentageET.getText().toString().trim()));
+
+                        intent.putExtra("buyAt", Double.parseDouble(entryPriceET.getText().toString().trim()));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                    startActivity(intent);
                 }
             }
         });
